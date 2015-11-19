@@ -2,6 +2,10 @@ var _ = require('underscore');
 var common = require('./common.js');
 
 var builders = {
+    // _buildingMap: {},
+    
+    // _currentBuildingMap: null,
+
     build: function (vm, callback) {
         if (!vm.$el) {
             vm.$logger.error('No $el in ViewModel', common.onLogMessage(vm));
@@ -15,6 +19,16 @@ var builders = {
         }
 
         vm.$el._isReadyToBuild = true;
+
+
+        // if (vm.$el.id) {
+        //     this._buildingMap[vm.$el.id] = {
+        //         elements: {}
+        //     };
+        //     this._currentBuildingMap = this._buildingMap[vm.$el.id];
+        // } else {
+        //     this._currentBuildingMap = null;
+        // }
 
         builders.buildElements(vm, vm.$el.inner);
 

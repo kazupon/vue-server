@@ -70,6 +70,11 @@ var compilers = {
         }
 
         if (element.type === 'tag') {
+            if (element.isAttribsStatic && element.name !== 'option') {
+                element.compiled = true;
+                return;
+            }
+
             // v-model
             if (element.dirs.model) {
                 compilers.compileDirectiveModel(vm, element);
@@ -284,7 +289,7 @@ var compilers = {
             styles = compilers.compileDirectiveShow(vm, element, originalStyle);
         }
 
-        if (_.size(styles)) {
+        if (!_.isEmpty(styles)) {
             if (originalStyle) {
                 element.attribs.style = cssParser.stringify(common.extend(originalStyle, styles));
             } else {

@@ -522,6 +522,9 @@ var Compile = function (template) {
 
                     attribsCounter++;
                 });
+                
+
+                var isAttribsStatic = true;
 
                 _.each(attribs, function (value, name) {
                     // Removing Vue-directives from tree except v-clock
@@ -532,6 +535,10 @@ var Compile = function (template) {
                         !attribsForExclude[name]
                     ) {
                         element.attribs[name] = getMetaValue(value);
+                    }
+
+                    if (typeof element.attribs[name] !== 'string') {
+                        isAttribsStatic = false;
                     }
                 });
 
@@ -544,9 +551,8 @@ var Compile = function (template) {
                     });
                 }
 
-                // Removing empty object "dirs" from tag
-                if (!_.size(element.dirs)) {
-                    delete element.dirs;
+                if (_.isEmpty(element.dirs) && isAttribsStatic) {
+                    element.isAttribsStatic = true;
                 }
 
                 current.inner.push(element);
